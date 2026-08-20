@@ -9,60 +9,85 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body, html { width: 100%; height: 100%; overflow: hidden; font-family: 'Plus Jakarta Sans', sans-serif; background: #010e20; }
+        
         .title-page {
             position: relative; width: 100vw; height: 100vh;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             text-align: center; overflow: hidden;
         }
+
         .title-bg-video {
-            position: absolute; top: 50%; left: 50%; width: 100%; height: 100%;
-            transform: translate(-50%, -50%); object-fit: cover; z-index: 1; pointer-events: none;
+            position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%;
+            width: auto; height: auto; transform: translate(-50%, -50%);
+            object-fit: cover; z-index: 1; pointer-events: none;
         }
+
         .title-scrim {
-            position: absolute; inset: 0; background: radial-gradient(circle, rgba(1,14,32,0.4) 0%, rgba(1,14,32,0.85) 100%);
+            position: absolute; inset: 0;
+            background: linear-gradient(180deg, rgba(1, 14, 32, 0.45) 0%, rgba(1, 14, 32, 0.85) 100%);
             z-index: 2;
         }
+
         .title-container {
-            position: relative; z-index: 10; width: 92%; max-width: 500px;
+            position: relative; z-index: 10; width: 92%; max-width: 520px;
             display: flex; flex-direction: column; align-items: center;
-            background: rgba(1, 43, 93, 0.4); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.15); padding: 36px 24px; border-radius: 20px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            padding: 20px;
         }
-        .splash-eyebrow { font-family: monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #f25a22; margin-bottom: 16px; font-weight: bold; }
-        .splash-icon { font-size: 64px; color: #f25a22; margin-bottom: 18px; }
+
+        .splash-eyebrow {
+            font-family: monospace; font-size: 11px; letter-spacing: 2px;
+            text-transform: uppercase; color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 12px; font-weight: 600;
+        }
+
+        .splash-logo-img {
+            width: 220px; height: auto; max-width: 70vw; max-height: 28vh;
+            object-fit: contain; margin-bottom: 20px;
+            filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.7));
+            animation: tacticalPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes tacticalPulse {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-8px) scale(1.02); }
+        }
+
         .search-anim-container {
-            width: 100%; max-width: 280px; height: 40px; margin-bottom: 24px;
-            background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px; display: flex; align-items: center; justify-content: center; gap: 10px;
+            width: 100%; max-width: 280px; height: 42px; margin-bottom: 22px;
+            background: rgba(0, 0, 0, 0.65); border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 25px; display: flex; align-items: center; justify-content: center;
+            gap: 10px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
         }
+
         .search-icon-spin { font-size: 13px; color: #f25a22; }
         .search-anim-text { font-family: monospace; font-size: 11px; letter-spacing: 1px; color: #ffffff; text-transform: uppercase; }
+
         .btn-enter {
             background: #f25a22; border: none; color: #ffffff;
-            padding: 14px 36px; font-size: 13px; font-weight: 700; letter-spacing: 1.5px;
+            padding: 14px 38px; font-size: 12px; font-weight: 700; letter-spacing: 2px;
             text-transform: uppercase; border-radius: 30px; cursor: pointer; text-decoration: none;
-            display: inline-flex; align-items: center; gap: 10px; transition: 0.2s all;
-            box-shadow: 0 4px 20px rgba(242,90,34,0.5);
+            display: inline-flex; align-items: center; gap: 10px; transition: 0.25s all;
+            box-shadow: 0 4px 20px rgba(242, 90, 34, 0.5);
         }
-        .btn-enter:hover { background: #d94815; transform: scale(1.04); }
+        .btn-enter:hover { background: #d94815; transform: scale(1.04); box-shadow: 0 6px 25px rgba(242, 90, 34, 0.7); }
+
         .title-footer-note {
             position: absolute; bottom: 20px; z-index: 10; font-family: monospace;
-            font-size: 10px; letter-spacing: 1.5px; color: rgba(255,255,255,0.5); text-transform: uppercase;
+            font-size: 10px; letter-spacing: 1.5px; color: rgba(255, 255, 255, 0.5); text-transform: uppercase;
         }
     </style>
 </head>
 <body>
 
     <div class="title-page">
-        <video class="title-bg-video" autoplay loop muted playsinline>
-            <source src="48091-452601156_medium.mp4" type="video/mp4">
+        <video class="title-bg-video" autoplay loop muted playsinline preload="auto">
+            <source src="./48091-452601156_medium.mp4" type="video/mp4">
         </video>
         <div class="title-scrim"></div>
 
         <div class="title-container">
             <div class="splash-eyebrow">Coastal Vessel Monitoring &amp; Rescue Grid</div>
-            <div class="splash-icon"><i class="fa-solid fa-shield-halved"></i></div>
+            <img src="./ChatGPT_Image_Jun_14__2026__09_03_53_PM-removebg-preview.png" alt="NavRakshak Master Logo" class="splash-logo-img">
 
             <div class="search-anim-container">
                 <i class="fa-solid fa-magnifying-glass search-icon-spin"></i>
