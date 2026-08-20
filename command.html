@@ -5,13 +5,150 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Command | NAVRAKSHAK</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-    <link rel="stylesheet" href="assets/style.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+    <style>
+        :root {
+            --navy-950: #010e20;
+            --navy-900: #012b5d;
+            --navy-700: #0a3d73;
+            --orange-500: #f25a22;
+            --orange-600: #d94815;
+            --danger: #ff0055;
+            --success: #00b361;
+            --canvas: #f7f9fc;
+            --surface: #ffffff;
+            --ink-900: #0f172a;
+            --ink-500: #475569;
+            --line: rgba(1, 43, 93, 0.12);
+            --line-soft: rgba(1, 43, 93, 0.06);
+            --font-display: 'Rajdhani', sans-serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body, html {
+            height: 100%; width: 100%; font-family: var(--font-body);
+            background: var(--canvas); color: var(--ink-900); overflow: hidden;
+        }
+        .app-container { display: flex; height: 100vh; width: 100vw; flex-direction: column; }
+        @media (min-width: 992px) { .app-container { flex-direction: row; } }
+        aside {
+            width: 100%; background: rgba(255, 255, 255, 0.88); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--line); display: flex; flex-direction: column; padding: 14px 16px; z-index: 2000; gap: 14px;
+        }
+        @media (min-width: 992px) {
+            aside {
+                width: 300px; height: 100vh; border-right: 1px solid var(--line); border-bottom: none;
+                padding: 32px 22px; justify-content: flex-start; gap: 28px; overflow-y: auto;
+            }
+        }
+        .brand { text-align: left; display: flex; align-items: center; gap: 14px; text-decoration: none; color: inherit; }
+        .radar-wrap {
+            position: relative; width: 52px; height: 52px; flex-shrink: 0;
+            border-radius: 50%; background: radial-gradient(circle at 50% 50%, var(--navy-900), var(--navy-950));
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(1, 43, 93, 0.35);
+        }
+        .radar-wrap::before {
+            content: ''; position: absolute; inset: 0; border-radius: 50%;
+            background: conic-gradient(from 0deg, rgba(242,90,34,0.9), rgba(242,90,34,0) 35%);
+            animation: radarSpin 3.2s linear infinite;
+        }
+        .radar-wrap::after { content: ''; position: absolute; inset: 3px; border-radius: 50%; background: var(--navy-950); }
+        .radar-wrap i { position: relative; z-index: 2; color: var(--orange-500); font-size: 16px; }
+        @keyframes radarSpin { to { transform: rotate(360deg); } }
+        .brand-text-group { display: flex; flex-direction: column; }
+        .brand-logo { font-family: var(--font-display); font-size: 22px; font-weight: 700; letter-spacing: 1.5px; color: var(--navy-900); line-height: 1.1; }
+        .brand-sub { font-size: 9.5px; color: var(--orange-500); letter-spacing: 2px; text-transform: uppercase; font-weight: 700; margin-top: 2px; }
+        .sidebar-metrics {
+            background: rgba(1, 43, 93, 0.04); border: 1px solid var(--line); border-radius: 10px;
+            padding: 12px 14px; font-family: var(--font-mono); font-size: 11px; display: none;
+        }
+        @media (min-width: 992px) { .sidebar-metrics { display: block; } }
+        .metric-line { display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px; gap: 10px; }
+        .metric-line:last-child { margin-bottom: 0; }
+        .metric-label { color: var(--ink-500); letter-spacing: 0.5px; }
+        .metric-value { color: var(--orange-500); font-weight: 700; }
+        .metric-value.ok { color: var(--success); }
+        .nav-list { display: flex; flex-direction: row; gap: 6px; width: 100%; overflow-x: auto; padding-bottom: 2px; }
+        @media (min-width: 992px) { .nav-list { flex-direction: column; gap: 10px; overflow-x: visible; padding-bottom: 0; } }
+        .nav-item {
+            background: rgba(1, 43, 93, 0.03); border: 1px solid rgba(1, 43, 93, 0.06);
+            color: var(--ink-500); font-family: var(--font-body); font-size: 11px; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 1px; padding: 12px 14px; border-radius: 8px; cursor: pointer;
+            transition: all 0.2s ease; display: flex; align-items: center; gap: 12px; width: 100%; white-space: nowrap; flex-shrink: 0; text-decoration: none;
+        }
+        .nav-item i { width: 14px; text-align: center; }
+        .nav-item:hover { background: rgba(1, 43, 93, 0.06); color: var(--navy-900); border-color: rgba(1, 43, 93, 0.15); }
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(242, 90, 34, 0.12), rgba(1, 43, 93, 0.08));
+            color: var(--navy-900); border-color: var(--orange-500); box-shadow: 0 4px 15px rgba(242, 90, 34, 0.1);
+        }
+        .sidebar-footer { display: none; margin-top: auto; font-family: var(--font-mono); font-size: 9.5px; color: var(--ink-500); letter-spacing: 0.5px; padding-top: 16px; border-top: 1px solid var(--line-soft); }
+        @media (min-width: 992px) { .sidebar-footer { display: block; } }
+        .main-workspace { flex-grow: 1; position: relative; height: 100%; background: var(--canvas); overflow-y: auto; }
+        .page-shell { position: relative; z-index: 5; max-width: 760px; margin: 0 auto; padding: 28px 20px 60px; }
+        @media (min-width: 992px) { .page-shell { padding: 48px 40px 60px; } }
+        .page-eyebrow {
+            font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+            color: var(--orange-500); font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 10px;
+        }
+        .page-eyebrow::before { content: ''; width: 22px; height: 1px; background: var(--orange-500); }
+        .page-title { font-family: var(--font-display); font-size: 32px; font-weight: 700; color: var(--navy-900); letter-spacing: 0.5px; margin: 0 0 8px; }
+        @media (min-width: 992px) { .page-title { font-size: 40px; } }
+        .page-lede { font-size: 14px; color: var(--ink-500); max-width: 520px; line-height: 1.6; margin-bottom: 30px; }
+        .panel {
+            background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+            padding: 24px; box-shadow: 0 10px 30px rgba(1, 43, 93, 0.05); margin-bottom: 20px;
+        }
+        .panel-title {
+            font-family: var(--font-display); font-size: 16px; font-weight: 700; letter-spacing: 1px; margin-bottom: 18px;
+            color: var(--navy-900); text-transform: uppercase; border-bottom: 1px solid var(--line-soft); padding-bottom: 10px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .form-row { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
+        @media (min-width: 576px) { .form-row { flex-direction: row; gap: 15px; } }
+        label { display: block; font-size: 10px; color: var(--ink-500); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; font-weight: 600; }
+        input {
+            width: 100%; background: #ffffff; border: 1px solid var(--line);
+            padding: 12px 14px; color: var(--ink-900); border-radius: 8px; font-family: var(--font-mono); font-size: 13px;
+        }
+        input:focus { border-color: var(--orange-500); outline: none; box-shadow: 0 0 0 3px rgba(242,90,34,0.1); }
+        .btn-dispatch {
+            background: var(--navy-900); color: #fff; border: 1px solid var(--navy-900);
+            padding: 14px; font-family: var(--font-body); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; border-radius: 8px; cursor: pointer; transition: all 0.2s; width: 100%;
+        }
+        .btn-dispatch:hover { background: #021e42; }
+        .btn-dispatch:disabled { background: #e2e8f0; border-color: #cbd5e1; color: #94a3b8; cursor: not-allowed; }
+        .btn-mute { width: 100%; background: #ffffff; color: var(--navy-900); border: 1px solid var(--line); padding: 14px; font-family: var(--font-body); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; border-radius: 8px; cursor: pointer; margin-top: 10px; transition: all 0.2s; }
+        .btn-mute:hover { background: rgba(1,43,93,0.04); }
+        .btn-ghost-danger { background: none; border: none; color: var(--danger); font-family: var(--font-body); font-size: 10px; font-weight: 700; margin-top: 8px; cursor: pointer; text-align: left; width: fit-content; letter-spacing: 0.5px; padding: 6px 0; }
+        .status-badge { background: #ffffff; padding: 10px 16px; border-radius: 30px; font-size: 10px; font-weight: 700; border: 1px solid var(--line); font-family: var(--font-mono); letter-spacing: 0.5px; color: var(--navy-900); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .geo-preview {
+            display: flex; align-items: center; gap: 20px; padding: 18px;
+            background: radial-gradient(circle at 30% 30%, rgba(1,43,93,0.05), rgba(1,43,93,0.015));
+            border: 1px solid var(--line-soft); border-radius: 12px; margin-bottom: 20px;
+        }
+        .geo-preview-stage { position: relative; width: 96px; height: 96px; flex-shrink: 0; }
+        .geo-preview-stage svg { width: 100%; height: 100%; }
+        .geo-ring-buffer { fill: rgba(242, 90, 34, 0.06); stroke: var(--orange-500); stroke-width: 1.2; stroke-dasharray: 3 4; }
+        .geo-ring-radius { fill: rgba(1, 43, 93, 0.05); stroke: var(--navy-700); stroke-width: 1.4; stroke-dasharray: 2 3; }
+        .geo-sweep { transform-origin: 48px 48px; animation: radarSpin 2.6s linear infinite; }
+        .geo-sweep-line { stroke: var(--orange-500); stroke-width: 1.5; opacity: 0.55; }
+        .geo-vessel-dot { fill: var(--navy-900); }
+        .geo-preview-copy { font-family: var(--font-mono); font-size: 11px; color: var(--ink-500); line-height: 1.7; }
+        .geo-preview-copy b { color: var(--navy-900); }
+        .geo-preview-copy .dot-orange { color: var(--orange-500); font-weight: 700; }
+        .pin-status-line { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.5px; margin-top: 8px; height: 14px; }
+        .pin-status-line.ok { color: var(--success); }
+        .pin-status-line.bad { color: var(--danger); }
+        .pulse-alarm { background: var(--danger) !important; color: #fff !important; }
+    </style>
 </head>
 <body>
 
 <div class="app-container">
     <aside>
-        <a class="brand" href="index.html">
+        <a class="brand" href="./index.html">
             <div class="radar-wrap"><i class="fa-solid fa-shield-halved"></i></div>
             <div class="brand-text-group">
                 <div class="brand-logo">NAVRAKSHAK</div>
@@ -25,10 +162,10 @@
         </div>
 
         <nav class="nav-list">
-            <a class="nav-item" data-page="surveillance.html" href="surveillance.html"><i class="fa-solid fa-satellite"></i> <span>Surveillance</span></a>
-            <a class="nav-item" data-page="command.html" href="command.html"><i class="fa-solid fa-compass"></i> <span>Command</span></a>
-            <a class="nav-item" id="sosNavBtn" data-page="rescue.html" href="rescue.html"><i class="fa-solid fa-triangle-exclamation"></i> <span>Rescue Ack</span></a>
-            <a class="nav-item" data-page="weather.html" href="weather.html"><i class="fa-solid fa-cloud-sun-rain"></i> <span>Weather</span></a>
+            <a class="nav-item" data-page="surveillance.html" href="./surveillance.html"><i class="fa-solid fa-satellite"></i> <span>Surveillance</span></a>
+            <a class="nav-item active" data-page="command.html" href="./command.html"><i class="fa-solid fa-compass"></i> <span>Command</span></a>
+            <a class="nav-item" id="sosNavBtn" data-page="rescue.html" href="./rescue.html"><i class="fa-solid fa-triangle-exclamation"></i> <span>Rescue Ack</span></a>
+            <a class="nav-item" data-page="weather.html" href="./weather.html"><i class="fa-solid fa-cloud-sun-rain"></i> <span>Weather</span></a>
         </nav>
 
         <div class="sidebar-footer">SEC-02 · COMMAND<br>Geofence, buffer &amp; hardware overrides</div>
@@ -36,13 +173,13 @@
 
     <div class="main-workspace">
         <div class="page-shell">
-            <div class="status-badge reveal reveal-1" id="statusBadge" style="position:static; display:inline-flex; margin-bottom:18px;">LINK: SECURE / SAFE</div>
+            <div class="status-badge" id="statusBadge" style="display:inline-flex; margin-bottom:18px;">LINK: SECURE / SAFE</div>
 
-            <div class="page-eyebrow reveal reveal-1">Sector 02</div>
-            <h1 class="page-title reveal reveal-2">Boundaries Configuration</h1>
-            <p class="page-lede reveal reveal-3">Set the vessel's home center point and geofence radius, or send a manual mute / weather broadcast to the receiver hardware.</p>
+            <div class="page-eyebrow">Sector 02</div>
+            <h1 class="page-title">Boundaries Configuration</h1>
+            <p class="page-lede">Set the vessel's home center point and geofence radius, or send a manual mute / weather broadcast to the receiver hardware.</p>
 
-            <div class="geo-preview reveal reveal-4">
+            <div class="geo-preview">
                 <div class="geo-preview-stage">
                     <svg viewBox="0 0 96 96">
                         <circle class="geo-ring-buffer" id="geoRingBuffer" cx="48" cy="48" r="34"></circle>
@@ -50,7 +187,6 @@
                         <g class="geo-sweep">
                             <line class="geo-sweep-line" x1="48" y1="48" x2="48" y2="8"></line>
                         </g>
-                        <circle class="geo-vessel-dot-pulse" cx="48" cy="48" r="4"></circle>
                         <circle class="geo-vessel-dot" cx="48" cy="48" r="3"></circle>
                     </svg>
                 </div>
@@ -61,7 +197,7 @@
                 </div>
             </div>
 
-            <div class="panel reveal reveal-4">
+            <div class="panel">
                 <div class="panel-title"><i class="fa-solid fa-crosshairs"></i> Boundaries Configuration</div>
 
                 <div style="margin-bottom: 4px;">
@@ -96,13 +232,9 @@
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-<script src="assets/app.js"></script>
+<script src="./app.js"></script>
 
 <script>
-    /* ---- COMMAND PAGE ANIMATIONS ONLY ----
-       Purely cosmetic: does not touch Firebase, PIN validation, or any
-       dispatch logic defined in assets/app.js. Safe to remove without
-       affecting system behaviour. */
     (function () {
         const radInput = document.getElementById('cmdRad');
         const bufInput = document.getElementById('cmdBuf');
@@ -118,60 +250,37 @@
             const buf = parseFloat(bufInput.value) || 0;
             const rScaled = clamp(14 + rad / 6, 14, 40);
             const bScaled = clamp(rScaled + buf / 4, rScaled + 2, 46);
-            ringRadius.setAttribute('r', rScaled);
-            ringBuffer.setAttribute('r', bScaled);
-            radLabel.textContent = rad ? `${rad} m` : '-- m';
-            bufLabel.textContent = buf ? `${buf} m` : '-- m';
+            if (ringRadius) ringRadius.setAttribute('r', rScaled);
+            if (ringBuffer) ringBuffer.setAttribute('r', bScaled);
+            if (radLabel) radLabel.textContent = rad ? `${rad} m` : '-- m';
+            if (bufLabel) bufLabel.textContent = buf ? `${buf} m` : '-- m';
         }
 
-        [radInput, bufInput].forEach(el => el.addEventListener('input', updatePreview));
-        // Preferences load asynchronously from Firebase (see app.js) — poll briefly
-        // just to sync the preview once values are primed, then stop.
-        let ticks = 0;
-        const primeTimer = setInterval(() => {
-            updatePreview();
-            ticks++;
-            if (ticks > 20) clearInterval(primeTimer);
-        }, 150);
+        if (radInput && bufInput) {
+            [radInput, bufInput].forEach(el => el.addEventListener('input', updatePreview));
+            let ticks = 0;
+            const primeTimer = setInterval(() => {
+                updatePreview();
+                ticks++;
+                if (ticks > 20) clearInterval(primeTimer);
+            }, 150);
+        }
 
-        /* Ripple + shimmer feedback on the action buttons */
-        document.querySelectorAll('.btn-dispatch, .btn-mute, .btn-danger').forEach(btn => {
-            btn.addEventListener('pointerdown', (e) => {
-                if (btn.disabled) return;
-                const rect = btn.getBoundingClientRect();
-                const size = Math.max(rect.width, rect.height) * 1.4;
-                const dot = document.createElement('span');
-                dot.className = 'ripple-dot';
-                dot.style.width = dot.style.height = `${size}px`;
-                dot.style.left = `${e.clientX - rect.left - size / 2}px`;
-                dot.style.top = `${e.clientY - rect.top - size / 2}px`;
-                btn.appendChild(dot);
-                setTimeout(() => dot.remove(), 650);
-            });
-            btn.addEventListener('click', () => {
-                if (btn.disabled) return;
-                btn.classList.add('is-sending');
-                setTimeout(() => btn.classList.remove('is-sending'), 700);
-            });
-        });
-
-        /* Live PIN feedback — visual only, the actual 1234 check that
-           enables the button still runs inside assets/app.js#checkAuth */
         const pinInput = document.getElementById('adminPin');
         const pinStatus = document.getElementById('pinStatusLine');
-        pinInput.addEventListener('input', () => {
-            pinStatus.classList.remove('ok', 'bad');
-            if (pinInput.value.length < 4) { pinStatus.textContent = ''; return; }
-            if (pinInput.value === '1234') {
-                pinStatus.textContent = 'ACCESS GRANTED';
-                pinStatus.classList.add('ok');
-            } else {
-                pinStatus.textContent = 'ACCESS DENIED';
-                pinStatus.classList.add('bad');
-                pinInput.classList.add('shake-invalid');
-                setTimeout(() => pinInput.classList.remove('shake-invalid'), 400);
-            }
-        });
+        if (pinInput && pinStatus) {
+            pinInput.addEventListener('input', () => {
+                pinStatus.classList.remove('ok', 'bad');
+                if (pinInput.value.length < 4) { pinStatus.textContent = ''; return; }
+                if (pinInput.value === '1234') {
+                    pinStatus.textContent = 'ACCESS GRANTED';
+                    pinStatus.classList.add('ok');
+                } else {
+                    pinStatus.textContent = 'ACCESS DENIED';
+                    pinStatus.classList.add('bad');
+                }
+            });
+        }
     })();
 </script>
 </body>
