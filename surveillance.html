@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Surveillance | NAVRAKSHAK</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+
+<div class="app-container">
+    <aside>
+        <a class="brand" href="index.html">
+            <div class="radar-wrap"><i class="fa-solid fa-shield-halved"></i></div>
+            <div class="brand-text-group">
+                <div class="brand-logo">NAVRAKSHAK</div>
+                <div class="brand-sub">Control Hub System</div>
+            </div>
+        </a>
+
+        <div class="sidebar-metrics">
+            <div class="metric-line"><span class="metric-label">Vessel Node</span><span class="metric-value" id="srvStatus">ACTIVE</span></div>
+            <div class="metric-line"><span class="metric-label">Cloud Pipe</span><span class="metric-value ok">ONLINE</span></div>
+        </div>
+
+        <nav class="nav-list">
+            <a class="nav-item" data-page="surveillance.html" href="surveillance.html"><i class="fa-solid fa-satellite"></i> <span>Surveillance</span></a>
+            <a class="nav-item" data-page="command.html" href="command.html"><i class="fa-solid fa-compass"></i> <span>Command</span></a>
+            <a class="nav-item" id="sosNavBtn" data-page="rescue.html" href="rescue.html"><i class="fa-solid fa-triangle-exclamation"></i> <span>Rescue Ack</span></a>
+            <a class="nav-item" data-page="weather.html" href="weather.html"><i class="fa-solid fa-cloud-sun-rain"></i> <span>Weather</span></a>
+        </nav>
+
+        <div class="sidebar-footer">SEC-01 · SURVEILLANCE<br>Live vessel tracking &amp; geofence overlay</div>
+    </aside>
+
+    <div class="main-workspace">
+        <div id="map"></div>
+
+        <div class="status-badge" id="statusBadge">LINK: SECURE / SAFE</div>
+
+        <div class="overlay-card" id="telemetryOverlay">
+            <div class="overlay-label">Vessel Tracking Position</div>
+            <div class="overlay-value" id="boatCoords">--.------, --.------</div>
+            <div class="overlay-sub" id="syncTime">DIST TO EDGE: 0.0 m</div>
+        </div>
+    </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

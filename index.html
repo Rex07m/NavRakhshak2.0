@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NAVRAKSHAK | Tactical Operations Command</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="assets/style.css" />
+    <style>
+        html, body { overflow: hidden; }
+    </style>
+</head>
+<body>
+
+    <div class="title-page">
+        <video class="title-bg-video" autoplay loop muted playsinline>
+            <source src="48091-452601156_medium.mp4" type="video/mp4">
+        </video>
+        <div class="title-scrim"></div>
+
+        <div class="title-container">
+            <div class="splash-eyebrow">Coastal Vessel Monitoring &amp; Rescue Grid</div>
+            <img src="ChatGPT_Image_Jun_14__2026__09_03_53_PM-removebg-preview.png" alt="NavRakshak Master Logo" class="splash-logo-img">
+
+            <div class="search-anim-container">
+                <i class="fa-solid fa-magnifying-glass search-icon-spin"></i>
+                <span class="search-anim-text" id="loaderText">Scanning Node Streams...</span>
+            </div>
+
+            <a class="btn-enter" href="surveillance.html"><i class="fa-solid fa-shield-halved"></i> Initialize System</a>
+        </div>
+
+        <div class="title-footer-note">Vessel Node · Control Hub System</div>
+    </div>
+
+    <script>
+        const statusPhrases = ["Scanning Node Streams...", "Connecting Telemetry...", "Verifying Encryption...", "System Secure"];
+        let phraseIndex = 0;
+        setInterval(() => {
+            const txtNode = document.getElementById('loaderText');
+            if (txtNode) {
+                phraseIndex = (phraseIndex + 1) % statusPhrases.length;
+                txtNode.innerText = statusPhrases[phraseIndex];
+            }
+        }, 2500);
+    </script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Rescue Ack | NAVRAKSHAK</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+
+<div class="app-container">
+    <aside>
+        <a class="brand" href="index.html">
+            <div class="radar-wrap"><i class="fa-solid fa-shield-halved"></i></div>
+            <div class="brand-text-group">
+                <div class="brand-logo">NAVRAKSHAK</div>
+                <div class="brand-sub">Control Hub System</div>
+            </div>
+        </a>
+
+        <div class="sidebar-metrics">
+            <div class="metric-line"><span class="metric-label">Vessel Node</span><span class="metric-value" id="srvStatus">ACTIVE</span></div>
+            <div class="metric-line"><span class="metric-label">Cloud Pipe</span><span class="metric-value ok">ONLINE</span></div>
+        </div>
+
+        <nav class="nav-list">
+            <a class="nav-item" data-page="surveillance.html" href="surveillance.html"><i class="fa-solid fa-satellite"></i> <span>Surveillance</span></a>
+            <a class="nav-item" data-page="command.html" href="command.html"><i class="fa-solid fa-compass"></i> <span>Command</span></a>
+            <a class="nav-item" id="sosNavBtn" data-page="rescue.html" href="rescue.html"><i class="fa-solid fa-triangle-exclamation"></i> <span>Rescue Ack</span></a>
+            <a class="nav-item" data-page="weather.html" href="weather.html"><i class="fa-solid fa-cloud-sun-rain"></i> <span>Weather</span></a>
+        </nav>
+
+        <div class="sidebar-footer">SEC-03 · RESCUE<br>Emergency override &amp; alarm clearance</div>
+    </aside>
+
+    <div class="main-workspace">
+        <div class="page-shell">
+            <div class="status-badge" id="statusBadge" style="position:static; display:inline-flex; margin-bottom:18px;">LINK: SECURE / SAFE</div>
+
+            <div class="page-eyebrow">Sector 03</div>
+            <h1 class="page-title">Rescue Operation Deployment</h1>
+            <p class="page-lede">Acknowledge an active SOS from the vessel and clear the alarm state once the situation is confirmed under control.</p>
+
+            <div class="panel" style="max-width: 420px;">
+                <div class="panel-title"><i class="fa-solid fa-life-ring"></i> Emergency Override</div>
+                <label>Emergency Override Authorization Code</label>
+                <input type="password" id="rescuePin" placeholder="Enter security PIN to clear alarms" maxlength="4">
+                <button class="btn-dispatch pulse-alarm" onclick="acknowledgeSOS()" style="margin-top:15px;">Broadcast Emergency Ack Command</button>
+                <p class="helper-note">This transmits <code>ACK_SOS</code> to the vessel gateway and clears the active alarm state once the correct PIN is entered.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
